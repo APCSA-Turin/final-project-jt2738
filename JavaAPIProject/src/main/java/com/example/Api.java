@@ -26,20 +26,22 @@ public class Api {
             names[i]=name;
             System.out.println(name);
         }
-
-
   
     }
     public static String getData(String endpoint) throws Exception {
             /*endpoint is a url (string) that you get from an API website*/
             URL url = new URL(endpoint);
+            URL url2 = new URL("https://genshin.jmp.blue/characters/albedo/portrait");
             /*connect to the URL*/
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
             /*creates a GET request to the API.. Asking the server to retrieve information for our program*/
             connection.setRequestMethod("GET");
+            connection2.setRequestMethod("GET");
             /* When you read data from the server, it wil be in bytes, the InputStreamReader will convert it to text. 
             The BufferedReader wraps the text in a buffer so we can read it line by line*/
             BufferedReader buff = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader buff2 = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
             String inputLine;//variable to store text, line by line
             /*A string builder is similar to a string object but faster for larger strings, 
             you can concatenate to it and build a larger string. Loop through the buffer 
@@ -50,7 +52,15 @@ public class Api {
             }
             buff.close(); //close the bufferreader
             connection.disconnect(); //disconnect from server 
-            return content.toString(); //return the content as a string
+
+            StringBuilder content2 = new StringBuilder();
+            while ((inputLine = buff2.readLine()) != null) {
+                content.append(inputLine);
+            }
+            buff2.close(); //close the bufferreader
+            connection2.disconnect(); //disconnect from server 
+            
+            return content.toString() + content2.toString(); //return the content as a string
      
 
 
