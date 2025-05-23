@@ -70,8 +70,6 @@ public class Api {
             }
         }
         scanner.close();
-    
-  
     }
 
      private static void downloadUsingStream(String urlStr, String file) throws IOException{ 
@@ -89,7 +87,7 @@ public class Api {
         bis.close();
     }
 
-
+    
 
      public static String getData(String endpoint, int state) throws Exception {
             /*endpoint is a url (string) that you get from an API website*/
@@ -124,6 +122,8 @@ public class Api {
             connection.disconnect(); //disconnect from server 
              return  content.toString();
     }
+
+   
     
 }
 
