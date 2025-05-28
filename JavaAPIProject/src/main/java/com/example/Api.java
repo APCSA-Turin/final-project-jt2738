@@ -3,6 +3,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -25,8 +26,14 @@ import java.awt.image.BufferedImage;
 public class Api {
 
     public static void main(String[] args) throws Exception {
+        String test = fetchImage(parseData());
+        System.out.println(test);
+
+    }
+
+    public static String parseData() throws Exception {
         String url = "https://genshin.jmp.blue/characters/all";
-        String jsonString = getData(url,-1);
+        String jsonString = getDataNames(url,-1);
         JSONArray array = new JSONArray(jsonString);
         String[] names = new String[array.length()];
         for(int i=0;i<array.length();i++){
@@ -57,22 +64,37 @@ public class Api {
     }
        
         
-        Scanner scanner = new Scanner(System.in); 
-        System.out.println("Who is this?");
-        boolean guess= false;
-        while (guess == false) {
-            String userGuess = scanner.nextLine();
-            if (!userGuess.equals(charName)) {
-                System.out.println("Incorrect! Try Again?");
-            }else{
-                guess = true;
-                System.out.println("Correct!");
-            }
-        }
-        scanner.close();
+        // Scanner scanner = new Scanner(System.in); 
+        // System.out.println("Who is this?");
+        // boolean guess= false;
+        // while (guess == false) {
+        //     String userGuess = scanner.nextLine();
+        //     if (!userGuess.equals(charName)) {
+        //         System.out.println("Incorrect! Try Again?");
+        //     }else{
+        //         guess = true;
+        //         System.out.println("Correct!");
+        //     }
+        // }
+        // scanner.close();
+
+        return nospacescharName+".png";
     }
 
-     private static void downloadUsingStream(String urlStr, String file) throws IOException{ 
+    public static String fetchImage(String name){
+        File directory = new File("JavaAPIProject/src/images"); // Replace with your directory path
+        File[] list = directory.listFiles();
+        for(File f : list){
+            if(f.getName().equals(name)){
+                return name;
+            }
+        }
+        return "null";
+    }
+
+
+
+     public static void downloadUsingStream(String urlStr, String file) throws IOException{ 
         //https://www.digitalocean.com/community/tutorials/java-download-file-url
         URL url = new URL(urlStr);
         BufferedInputStream bis = new BufferedInputStream(url.openStream());
@@ -89,7 +111,7 @@ public class Api {
 
     
 
-     public static String getData(String endpoint, int state) throws Exception {
+     public static String getDataNames(String endpoint, int state) throws Exception {
             /*endpoint is a url (string) that you get from an API website*/
             URL url = null;
             

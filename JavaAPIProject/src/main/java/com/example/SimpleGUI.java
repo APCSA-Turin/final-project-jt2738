@@ -1,5 +1,4 @@
 package com.example;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,11 +12,12 @@ public class SimpleGUI{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create components
-        JLabel titleLabel = new JLabel("Enter city name:", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Who is this?", SwingConstants.CENTER);
         JTextField inputField = new JTextField(); //input text 
-        JButton fetchButton = new JButton("Fetch Data");//a button fetches data when pressed
+        JButton fetchButton = new JButton("Enter Answer");//a button fetches data when pressed
         JTextArea outputArea = new JTextArea();//where the fetched data will output 
         outputArea.setEditable(false);
+        JLabel imageLabel= new JLabel();;
 
         // Layout setup
         JPanel panel = new JPanel(new GridLayout(4, 1)); //create the JPanel object
@@ -27,6 +27,7 @@ public class SimpleGUI{
         panel.add(inputField);
         panel.add(fetchButton);
         panel.add(outputArea);
+        panel.add(imageLabel);
 
         //We have added components to our panel, then we add the PANEL to our FRAME
         frame.add(panel); 
@@ -35,13 +36,22 @@ public class SimpleGUI{
         fetchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String city = inputField.getText().trim(); //city is in reference to my example
-                if (!city.isEmpty()) {
+                String name = inputField.getText().trim(); //city is in reference to my example
+                String fileName = "";
+
+                if (!name.isEmpty()) {
                     // Placeholder for data — replace with real API call 
-                    String result = "You searched for: " + city;
-                    outputArea.setText(result);
+                    try {
+                        fileName += Api.fetchImage(Api.parseData());
+                    } catch (Exception e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    ImageIcon image1 = new ImageIcon("JavaAPIProject/src/images"+fileName);
+                    imageLabel.setIcon(image1);
+                    
                 } else {
-                    outputArea.setText("Please enter a city.");
+                    outputArea.setText("Please enter a name:");
                 }
             }
         });
@@ -49,4 +59,3 @@ public class SimpleGUI{
         frame.setVisible(true);
     }
 }
-
