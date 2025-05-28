@@ -25,44 +25,42 @@ import java.awt.image.BufferedImage;
 
 public class Api {
 
-    public static void main(String[] args) throws Exception {
-        String test = fetchImage(parseData());
-        System.out.println(test);
-
-    }
-
-    public static String parseData() throws Exception {
+    public static CharacterInfo getRandomCharacter ()throws Exception {
         String url = "https://genshin.jmp.blue/characters/all";
         String jsonString = getDataNames(url,-1);
         JSONArray array = new JSONArray(jsonString);
         String[] names = new String[array.length()];
         for(int i=0;i<array.length();i++){
             JSONObject obj = array.getJSONObject(i);
-            String name = obj.getString("name");
-            names[i]=name;
+            names[i] = obj.getString("name");
+            
         }
         int idx= (int)(Math.random()*names.length);
-        String charName = names[idx].toLowerCase();
+        String displayName = names[idx];
+        String charName = displayName.toLowerCase();
         if (charName.equals("aratakiitto")) {
             charName = "arataki-itto";
         }
         String nospacescharName= charName.replaceAll("\\s", "");
+        String imageUrl;
         if (!nospacescharName.equals("kinich") && !nospacescharName.equals("kachina") ) {
-             String portrait = "https://genshin.jmp.blue/characters/" + nospacescharName + "/portrait";
-             try {      
-             downloadUsingStream(portrait, "JavaAPIProject/src/images/"+ nospacescharName +".png");
-             } catch (IOException e) {
-             e.printStackTrace();
-            }
+             imageUrl = "https://genshin.jmp.blue/characters/" + nospacescharName + "/portrait";
+            //  try {      
+            //  downloadUsingStream(portrait, "JavaAPIProject/src/images/"+ nospacescharName +".png");
+            //  } catch (IOException e) {
+            //  e.printStackTrace();
+            // }
         }else{
-             String card = "https://genshin.jmp.blue/characters/" + nospacescharName + "/card";
-             try {      
-             downloadUsingStream(card, "JavaAPIProject/src/images/"+ nospacescharName +".png");
-             } catch (IOException e) {
-             e.printStackTrace(); 
-        }
+             imageUrl = "https://genshin.jmp.blue/characters/" + nospacescharName + "/card";
+        //      try {      
+        //      downloadUsingStream(card, "JavaAPIProject/src/images/"+ nospacescharName +".png");
+        //      } catch (IOException e) {
+        //      e.printStackTrace(); 
+        // }
     }
-       
+       String filePath = "JavaAPIProject/src/images/" + nospacescharName + ".png";
+       downloadUsingStream(imageUrl, filePath);
+
         
         // Scanner scanner = new Scanner(System.in); 
         // System.out.println("Who is this?");
@@ -78,7 +76,7 @@ public class Api {
         // }
         // scanner.close();
 
-        return nospacescharName+".png";
+        return new CharacterInfo(displayName, filePath);
     }
 
     public static String fetchImage(String name){
