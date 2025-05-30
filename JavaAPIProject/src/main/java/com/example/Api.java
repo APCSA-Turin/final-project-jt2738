@@ -26,65 +26,42 @@ import java.awt.image.BufferedImage;
 public class Api {
 
     public static CharacterInfo getRandomCharacter ()throws Exception {
-        String url = "https://genshin.jmp.blue/characters/all";
-        String jsonString = getDataNames(url,-1);
-        JSONArray array = new JSONArray(jsonString);
-        String[] names = new String[array.length()];
-        for(int i=0;i<array.length();i++){
+        String url = "https://genshin.jmp.blue/characters/all"; //url fetching all characters' info
+        String jsonString = getDataNames(url,-1); //this string gets the data from the url and stores it in a string
+        JSONArray array = new JSONArray(jsonString); //convert the string to a JSON array
+        String[] names = new String[array.length()]; //string array is made to hold the names of the characters
+        for(int i=0;i<array.length();i++){ //iterates through json array to get ONLY the names of the characters
             JSONObject obj = array.getJSONObject(i);
             names[i] = obj.getString("name");
             
         }
-        int idx= (int)(Math.random()*names.length);
-        String displayName = names[idx];
-        String charName = displayName.toLowerCase();
-        if (charName.equals("aratakiitto")) {
+        int idx= (int)(Math.random()*names.length); //generates a random idx to get a character
+        String displayName = names[idx]; 
+        String charName = displayName.toLowerCase(); //makes name lowercase so it works with the url
+        if (charName.equals("aratakiitto")) { //checks for itto's name, since it has a dash
             charName = "arataki-itto";
         }
-        String nospacescharName= charName.replaceAll("\\s", "");
-        String imageUrl;
-        if (!nospacescharName.equals("kinich") && !nospacescharName.equals("kachina") ) {
-             imageUrl = "https://genshin.jmp.blue/characters/" + nospacescharName + "/portrait";
-            //  try {      
-            //  downloadUsingStream(portrait, "JavaAPIProject/src/images/"+ nospacescharName +".png");
-            //  } catch (IOException e) {
-            //  e.printStackTrace();
-            // }
+        String nospacescharName= charName.replaceAll("\\s", ""); 
+        String imageUrl; 
+        if (!nospacescharName.equals("kinich") && !nospacescharName.equals("kachina") ) { //checks for instance of kinich or kachina
+             imageUrl = "https://genshin.jmp.blue/characters/" + nospacescharName + "/portrait"; //if not either, then image URL is portrait
+            
         }else{
-             imageUrl = "https://genshin.jmp.blue/characters/" + nospacescharName + "/card";
-        //      try {      
-        //      downloadUsingStream(card, "JavaAPIProject/src/images/"+ nospacescharName +".png");
-        //      } catch (IOException e) {
-        //      e.printStackTrace(); 
-        // }
+             imageUrl = "https://genshin.jmp.blue/characters/" + nospacescharName + "/card"; //else get card of character
     }
-       String filePath = "JavaAPIProject/src/images/" + nospacescharName + ".png";
-       downloadUsingStream(imageUrl, filePath);
+       String filePath = "JavaAPIProject/src/images/" + nospacescharName + ".png"; //creates file path for image so it's accessible
+       downloadUsingStream(imageUrl, filePath); //dounloads image from given URL, then saves to file path
 
-        
-        // Scanner scanner = new Scanner(System.in); 
-        // System.out.println("Who is this?");
-        // boolean guess= false;
-        // while (guess == false) {
-        //     String userGuess = scanner.nextLine();
-        //     if (!userGuess.equals(charName)) {
-        //         System.out.println("Incorrect! Try Again?");
-        //     }else{
-        //         guess = true;
-        //         System.out.println("Correct!");
-        //     }
-        // }
-        // scanner.close();
 
-        return new CharacterInfo(displayName, filePath);
+        return new CharacterInfo(displayName, filePath); //returns the character's info
     }
 
-    public static String fetchImage(String name){
-        File directory = new File("JavaAPIProject/src/images"); // Replace with your directory path
+    public static String fetchImage(String name){ //method gets image from the directory
+        File directory = new File("JavaAPIProject/src/images"); //stores the place where images are stored
         File[] list = directory.listFiles();
-        for(File f : list){
-            if(f.getName().equals(name)){
-                return name;
+        for(File f : list){ 
+            if(f.getName().equals(name)){ 
+                return name; //iterates through files from API and returns name of file if matches, then returns the name so it can return the image
             }
         }
         return "null";
@@ -92,7 +69,7 @@ public class Api {
 
 
 
-     public static void downloadUsingStream(String urlStr, String file) throws IOException{ 
+     public static void downloadUsingStream(String urlStr, String file) throws IOException{ //image is downloaded and then saved to file path
         //https://www.digitalocean.com/community/tutorials/java-download-file-url
         URL url = new URL(urlStr);
         BufferedInputStream bis = new BufferedInputStream(url.openStream());
@@ -109,7 +86,7 @@ public class Api {
 
     
 
-     public static String getDataNames(String endpoint, int state) throws Exception {
+     public static String getDataNames(String endpoint, int state) throws Exception { //gets data from API, returns a string
             /*endpoint is a url (string) that you get from an API website*/
             URL url = null;
             
