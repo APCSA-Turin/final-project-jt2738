@@ -13,9 +13,9 @@ public class SimpleGUI{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create components
-        JLabel titleLabel = new JLabel("Character Guessing Game", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Who is this?", SwingConstants.CENTER);
         JTextField inputField = new JTextField(); //input text 
-        JButton fetchButton = new JButton("Enter");//a button fetches data when pressed
+        JButton fetchButton = new JButton("Enter Answer");//a button fetches data when pressed
         JTextArea outputArea = new JTextArea();//where the fetched data will output 
         outputArea.setEditable(false);
         JLabel imageLabel= new JLabel();;
@@ -34,22 +34,16 @@ public class SimpleGUI{
         frame.add(panel); 
 
         // Button behavior
-        fetchButton.addActionListener(new ActionListener() { 
+        fetchButton.addActionListener(new ActionListener() {
     @Override
-    public void actionPerformed(ActionEvent e) { 
-        CharacterInfo character = null;
-        try {
-            character = Api.getRandomCharacter();
-        } catch (Exception e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        correctAnswer = character.displayName;
-        String userInput = inputField.getText(); 
+    public void actionPerformed(ActionEvent e) {
+        String userInput = inputField.getText().trim();
 
         if (correctAnswer.isEmpty()) {
-            // No character loaded yet — load one 
+            // No character loaded yet — load one
             try {
+                CharacterInfo character = Api.getRandomCharacter();
+                correctAnswer = character.displayName;
                 ImageIcon icon = new ImageIcon(character.imagePath);
                 imageLabel.setIcon(icon);
                 outputArea.setText("Who's this?");
