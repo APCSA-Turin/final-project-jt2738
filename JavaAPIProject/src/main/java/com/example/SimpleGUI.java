@@ -37,37 +37,39 @@ public class SimpleGUI{
         fetchButton.addActionListener(new ActionListener() { 
     @Override
     public void actionPerformed(ActionEvent e) { 
-        CharacterInfo character = null; // when button is pressed, character object is made
+        CharacterInfo character = null;
         try {
-            character = Api.getRandomCharacter(); //character is initialized using API
+            character = Api.getRandomCharacter();
         } catch (Exception e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        correctAnswer = character.displayName; //program stores correct answer of the name
-        String userInput = inputField.getText(); // gathers user input from text field
+        correctAnswer = character.displayName;
+        String userInput = inputField.getText(); 
 
-        if (correctAnswer.isEmpty()) { // If no character is fetched, display an error
+        if (correctAnswer.isEmpty()) {
+            // No character loaded yet — load one 
             try {
                 ImageIcon icon = new ImageIcon(character.imagePath);
-                imageLabel.setIcon(icon); // sets image in the JLabel
-                outputArea.setText("Who's this?"); //asks user to guess the character
+                imageLabel.setIcon(icon);
+                outputArea.setText("Who's this?");
                 inputField.setText(""); // clear input
             } catch (Exception ex) {
                 ex.printStackTrace();
-                outputArea.setText("Error fetching character. Please input a real name!"); //if name is not found in data bases, displays error and propmts user to try again
+                outputArea.setText("Error fetching character.");
             }
         } else {
+            // Character is loaded — check user guess
             if (userInput.equalsIgnoreCase(correctAnswer)) {
                 outputArea.setText("Correct! It's " + correctAnswer + ".");
-                correctAnswer = ""; // Reset for next character. Player presses enter again to get a new character
+                correctAnswer = ""; // Reset for next character
             } else {
-                outputArea.setText("Incorrect! Try again."); //if incorrect player is prompted to try again
+                outputArea.setText("Incorrect! Try again.");
             }
         }
     }
 });
 
-        frame.setVisible(true); // Make the frame visible
+        frame.setVisible(true);
     }
 }

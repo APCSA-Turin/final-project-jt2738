@@ -120,6 +120,11 @@ public class Api {
              return  content.toString();
     }
 
+     public static String parseData() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'parseData'");
+     }
+
    
     
 }
