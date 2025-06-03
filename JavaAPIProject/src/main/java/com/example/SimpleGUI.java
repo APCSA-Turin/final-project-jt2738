@@ -17,8 +17,8 @@ public class SimpleGUI{
         JTextField inputField = new JTextField(); //input text 
         JButton fetchButton = new JButton("Enter Answer");//a button fetches data when pressed
         JTextArea outputArea = new JTextArea();//where the fetched data will output 
-        outputArea.setEditable(false);
-        JLabel imageLabel= new JLabel();;
+        outputArea.setEditable(false); 
+        JLabel imageLabel= new JLabel();; //where the image will be displayed
 
         // Layout setup
         JPanel panel = new JPanel(new GridLayout(5, 1)); //create the JPanel object
@@ -34,15 +34,14 @@ public class SimpleGUI{
         frame.add(panel); 
 
         // Button behavior
-        fetchButton.addActionListener(new ActionListener() {
+        fetchButton.addActionListener(new ActionListener() { //action listener waits for user to press "Enter"
     @Override
-    public void actionPerformed(ActionEvent e) {
-        String userInput = inputField.getText().trim();
+    public void actionPerformed(ActionEvent e) { //method that runs when button is pressed
+        String userInput = inputField.getText().trim(); //gets user input and removes extra spaces
 
         if (correctAnswer.isEmpty()) {
-            // No character loaded yet — load one
             try {
-                CharacterInfo character = Api.getRandomCharacter();
+                CharacterInfo character = Api.getRandomCharacter(); //acceses the API to get a random character
                 correctAnswer = character.displayName;
                 ImageIcon icon = new ImageIcon(character.imagePath);
                 imageLabel.setIcon(icon);
@@ -50,7 +49,7 @@ public class SimpleGUI{
                 inputField.setText(""); // clear input
             } catch (Exception ex) {
                 ex.printStackTrace();
-                outputArea.setText("Error fetching character.");
+                outputArea.setText("Error fetching character."); //if there's an error catching character, it will display this
             }
         } else {
             // Character is loaded — check user guess
@@ -64,6 +63,6 @@ public class SimpleGUI{
     }
 });
 
-        frame.setVisible(true);
+        frame.setVisible(true); //makes the frame visible
     }
 }
